@@ -1,18 +1,20 @@
-const Content = ({children, headerName, breadcrumb}) => {
+import {NavLink} from "react-router-dom";
+
+const Content = ({children, contentName, breadcrumb}) => {
     return (
         <div className="content-wrapper">
             <section className="content-header">
                 <div className="container-fluid">
                     <div className="row mb-2">
                         <div className="col-sm-6">
-                            <h1>{headerName}</h1>
+                            <h1>{contentName}</h1>
                         </div>
                         <div className="col-sm-6">
                             <ol className="breadcrumb float-sm-right">
                                 {breadcrumb.map((item, index) => (
                                     <li className={`breadcrumb-item ${index === breadcrumb.length - 1 ? 'active' : ''}`}
                                         key={index}>
-                                        {item.url ? <a href={item.url}>{item.title}</a> : item.title}
+                                        {item.url ? <NavLink to={item.url}>{item.title}</NavLink> : item.title}
                                     </li>
                                 ))}
                             </ol>
