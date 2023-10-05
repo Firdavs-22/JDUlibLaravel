@@ -10,20 +10,13 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('students', function (Blueprint $table) {
             $table->id();
+            $table->string('student_id')->nullable(false);
             $table->string('first_name')->nullable(false);
             $table->string('last_name')->nullable(false);
-            $table->string('email')->unique();
-            $table->string('telegram')->unique();
-            $table->string('phone_number')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->timestamp('created_date')->useCurrent();
-            $table->enum('role', ['default', 'super'])->default('default');
+            $table->string('email')->nullable(false)->unique();
             $table->enum('status', ['on', 'off'])->default('on');
-
-            $table->rememberToken();
         });
     }
 
@@ -32,6 +25,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('students');
     }
 };
