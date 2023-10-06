@@ -22,7 +22,7 @@ class Actions extends Model
     ];
 
     protected $casts = [
-        'created_date' => 'timestamp:H:i d.m.Y',
+        'created_date' => 'datetime:H:i d.m.Y',
         'action_table' => ActionTableEnum::class,
         'action' => ActionEnum::class,
     ];

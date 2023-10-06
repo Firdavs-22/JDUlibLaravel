@@ -21,8 +21,8 @@ class OccupiedBook extends Model
     ];
 
     protected $casts = [
-        'occupied_date' => 'timestamp:H:i d.m.Y',
-        'returned_date' => 'timestamp:H:i d.m.Y',
+        'occupied_date' => 'datetime:H:i d.m.Y',
+        'returned_date' => 'datetime:H:i d.m.Y',
         'status' => StatusEnum::class,
     ];
 }

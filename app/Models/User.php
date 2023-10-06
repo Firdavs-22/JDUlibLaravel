@@ -32,13 +32,15 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'email_verified_at',
+        'status',
     ];
 
 
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
-        'created_date' => 'timestamp:H:i d.m.Y',
+        'created_date' => 'datetime:H:i d.m.Y',
         'role' => RoleEnum::class,
         'status' => StatusEnum::class,
     ];
