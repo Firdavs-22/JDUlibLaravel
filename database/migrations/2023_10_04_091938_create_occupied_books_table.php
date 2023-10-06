@@ -14,8 +14,8 @@ return new class extends Migration {
             $table->id();
             $table->unsignedBigInteger('book_series_id');
             $table->unsignedBigInteger('student_id');
-            $table->date('occupied_date')->useCurrent();
-            $table->date('returned_date')->nullable();
+            $table->timestamp('occupied_date')->useCurrent();
+            $table->timestamp('returned_date')->nullable();
             $table->enum('status', [
                 'on', 'off'
             ])->default('on');
