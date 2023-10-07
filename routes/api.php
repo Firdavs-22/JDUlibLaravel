@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\BookController;
 
 
 //Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
@@ -37,6 +38,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     //Default
     Route::post('/logout', [UserController::class, 'logout']);
 
+    //Student
     Route::post('/student/create', [StudentController::class, 'store']);
     Route::get('/students/{page?}', [StudentController::class, 'index'])
         ->where('page', '^[0-9]+$')->defaults('page', 1);
@@ -45,5 +47,16 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::put('/student/{id}', [StudentController::class, 'update'])
         ->where('id', '^[0-9]+$');
     Route::delete('/student/{id}', [StudentController::class, 'destroy'])
+        ->where('id', '^[0-9]+$');
+
+    //Book
+    Route::post('/book/create', [BookController::class, 'store']);
+    Route::get('/books/{page?}', [BookController::class, 'index'])
+        ->where('page', '^[0-9]+$')->defaults('page', 1);
+    Route::get('/book/{id}', [BookController::class, 'show'])
+        ->where('id', '^[0-9]+$');
+    Route::put('/book/{id}', [BookController::class, 'update'])
+        ->where('id', '^[0-9]+$');
+    Route::delete('/book/{id}', [BookController::class, 'destroy'])
         ->where('id', '^[0-9]+$');
 });

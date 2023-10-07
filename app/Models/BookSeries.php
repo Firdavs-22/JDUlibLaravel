@@ -18,7 +18,17 @@ class BookSeries extends Model
         'status',
     ];
 
+    protected $hidden = [
+        'status',
+        'book_id'
+    ];
+
     protected $casts = [
         'status' => StatusEnum::class,
     ];
+
+    public function book()
+    {
+        return $this->hasOne(Book::class);
+    }
 }

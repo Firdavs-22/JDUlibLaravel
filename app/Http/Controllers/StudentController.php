@@ -17,7 +17,7 @@ class StudentController extends Controller
     {
         $request->validated($request->all());
 
-        $user = Student::create([
+        $student = Student::create([
             'student_id' => $request->student_id,
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
@@ -25,7 +25,7 @@ class StudentController extends Controller
         ]);
 
         return $this->success([
-            'student' => $user
+            'student' => $student
         ]);
     }
 
@@ -55,7 +55,7 @@ class StudentController extends Controller
             ->where(['status' => StatusEnum::ON])->first();
 
         if (!$student) {
-            return $this->error('', 'The requested user was not found', 404);
+            return $this->error('', 'The requested student was not found', 404);
         }
 
         return $this->success([
@@ -72,7 +72,7 @@ class StudentController extends Controller
             ->where(['status' => StatusEnum::ON])->first();
 
         if (!$student) {
-            return $this->error('', 'The requested user was not found', 404);
+            return $this->error('', 'The requested student was not found', 404);
         }
 
         $student->update($request->all());
