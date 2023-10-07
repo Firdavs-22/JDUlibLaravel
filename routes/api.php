@@ -38,4 +38,12 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/logout', [UserController::class, 'logout']);
 
     Route::post('/student/create', [StudentController::class, 'store']);
+    Route::get('/students/{page?}', [StudentController::class, 'index'])
+        ->where('page', '^[0-9]+$')->defaults('page', 1);
+    Route::get('/student/{id}', [StudentController::class, 'show'])
+        ->where('id', '^[0-9]+$');
+    Route::put('/student/{id}', [StudentController::class, 'update'])
+        ->where('id', '^[0-9]+$');
+    Route::delete('/student/{id}', [StudentController::class, 'destroy'])
+        ->where('id', '^[0-9]+$');
 });

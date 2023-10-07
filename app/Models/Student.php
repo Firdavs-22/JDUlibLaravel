@@ -20,6 +20,9 @@ class Student extends Model
         'status',
     ];
 
+    protected $hidden = [
+        'status'
+    ];
     protected $casts = [
         'status' => StatusEnum::class,
     ];
