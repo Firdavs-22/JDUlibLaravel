@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\BookController;
-
+use App\Http\Controllers\CategoryController;
 
 //Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //    return $request->user();
@@ -58,5 +58,16 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::put('/book/{id}', [BookController::class, 'update'])
         ->where('id', '^[0-9]+$');
     Route::delete('/book/{id}', [BookController::class, 'destroy'])
+        ->where('id', '^[0-9]+$');
+
+    //Category
+    Route::post('/category/create', [CategoryController::class, 'store']);
+    Route::get('/categories/{page?}', [CategoryController::class, 'index'])
+        ->where('page', '^[0-9]+$')->defaults('page', 1);
+    Route::get('/category/{id}', [CategoryController::class, 'show'])
+        ->where('id', '^[0-9]+$');
+    Route::put('/category/{id}', [CategoryController::class, 'update'])
+        ->where('id', '^[0-9]+$');
+    Route::delete('/category/{id}', [CategoryController::class, 'destroy'])
         ->where('id', '^[0-9]+$');
 });

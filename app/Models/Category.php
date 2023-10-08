@@ -12,6 +12,10 @@ class Category extends Model
 
     public $timestamps = false;
 
+    protected $hidden = [
+        'status'
+    ];
+
     protected $fillable = [
         'name',
         'status',
@@ -20,4 +24,9 @@ class Category extends Model
     protected $casts = [
         'status' => StatusEnum::class,
     ];
+
+    public function Books()
+    {
+        return $this->hasMany(Book::class)->where(['status' => StatusEnum::ON]);
+    }
 }

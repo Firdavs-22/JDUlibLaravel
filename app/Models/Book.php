@@ -31,5 +31,4 @@ class Book extends Model
     {
         return $this->hasMany(BookSeries::class)->where('status', StatusEnum::ON);
     }
-
 }

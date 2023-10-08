@@ -72,7 +72,7 @@ class StudentController extends Controller
             ->where(['status' => StatusEnum::ON])->first();
 
         if (!$student) {
-            return $this->error('', 'The requested student was not found', 404);
+            return $this->error('', 'The requested book was not found', 404);
         }
 
         $student->update($request->all());
