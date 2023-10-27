@@ -71,4 +71,5 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/take', [OccupiedController::class, 'take']);
     Route::put('/return', [OccupiedController::class, 'returnBook']);
     Route::put('/credit', [OccupiedController::class, 'credit']);
+    Route::put('/clear', [OccupiedController::class, 'clear']);
 });

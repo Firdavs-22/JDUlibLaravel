@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enum\OccupiedEnum;
+use App\Http\Requests\ClearRequest;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use App\Http\Requests\TakeBookRequest;
@@ -62,5 +63,16 @@ class OccupiedController extends Controller
         }
 
         return $this->success(['total_credit' => $total_credit], 'credit paid successfully');
+    }
+
+    public function clear(ClearRequest $request)
+    {
+        $request->validated($request->all());
+
+        $occupiedBook = OccupiedBook::query()->find($request->occupied_book_id);
+        $occupiedBook->status = OccupiedEnum::OFF;
+        $occupiedBook->save();
+
+        return $this->success(null, 'cleared successfully');
     }
 }
