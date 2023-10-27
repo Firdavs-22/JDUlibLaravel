@@ -38,24 +38,12 @@ class CategoryController extends Controller
         ]);
     }
 
-    public function index($page)
+    public function index()
     {
-        $perPage = 50;
-        $offset = ($page - 1) * $perPage;
-
-        $categories = Category::query()->where(['status' => StatusEnum::ON])->with('books')->offset($offset)->limit($perPage)->get();
-        $hasNext = Category::query()->where(['status' => StatusEnum::ON])->offset($offset + $perPage)->limit($perPage)->exists();
-        $total = Category::query()->where(['status' => StatusEnum::ON])->count();
-
-        $this->makeHiddenCategoriesId($categories);
+        $categories = Category::query()->where(['status' => StatusEnum::ON])->get();
 
         return $this->success([
             'categories' => $categories,
-            'pagination' => [
-                'hasNext' => $hasNext,
-                'total' => $total,
-                'currentPage' => $page
-            ]
         ]);
     }
 

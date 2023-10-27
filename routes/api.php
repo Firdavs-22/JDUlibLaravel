@@ -6,6 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\OccupiedController;
 
 //Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //    return $request->user();
@@ -32,16 +33,13 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         ->where('page', '^[0-9]+$')->defaults('page', 1);
     Route::get('/user/{id}', [UserController::class, 'show'])
         ->where('id', '^[0-9]+$');
-    Route::put('/user/{id}', [UserController::class, 'update'])
-        ->where('id', '^[0-9]+$');
 
     //Default
     Route::post('/logout', [UserController::class, 'logout']);
 
     //Student
     Route::post('/student/create', [StudentController::class, 'store']);
-    Route::get('/students/{page?}', [StudentController::class, 'index'])
-        ->where('page', '^[0-9]+$')->defaults('page', 1);
+    Route::get('/students/', [StudentController::class, 'index']);
     Route::get('/student/{id}', [StudentController::class, 'show'])
         ->where('id', '^[0-9]+$');
     Route::put('/student/{id}', [StudentController::class, 'update'])
@@ -51,8 +49,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     //Book
     Route::post('/book/create', [BookController::class, 'store']);
-    Route::get('/books/{page?}', [BookController::class, 'index'])
-        ->where('page', '^[0-9]+$')->defaults('page', 1);
+    Route::get('/books/', [BookController::class, 'index']);
     Route::get('/book/{id}', [BookController::class, 'show'])
         ->where('id', '^[0-9]+$');
     Route::put('/book/{id}', [BookController::class, 'update'])
@@ -62,12 +59,16 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     //Category
     Route::post('/category/create', [CategoryController::class, 'store']);
-    Route::get('/categories/{page?}', [CategoryController::class, 'index'])
-        ->where('page', '^[0-9]+$')->defaults('page', 1);
+    Route::get('/categories/', [CategoryController::class, 'index']);
     Route::get('/category/{id}', [CategoryController::class, 'show'])
         ->where('id', '^[0-9]+$');
     Route::put('/category/{id}', [CategoryController::class, 'update'])
         ->where('id', '^[0-9]+$');
     Route::delete('/category/{id}', [CategoryController::class, 'destroy'])
         ->where('id', '^[0-9]+$');
+
+    //Occupy
+    Route::post('/take', [OccupiedController::class, 'take']);
+    Route::put('/return', [OccupiedController::class, 'returnBook']);
+    Route::put('/credit', [OccupiedController::class, 'credit']);
 });

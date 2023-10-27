@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateBookRequest;
+use App\Models\OccupiedBook;
 use Illuminate\Http\Request;
 use App\Traits\HttpResponse;
 use App\Enum\StatusEnum;
@@ -40,22 +41,39 @@ class BookController extends Controller
         ]);
     }
 
-    public function index($page)
+    public function index()
     {
-        $perPage = 50;
-        $offset = ($page - 1) * $perPage;
 
-        $books = Book::query()->where(['status' => StatusEnum::ON])->with('bookSeries')->offset($offset)->limit($perPage)->get();
-        $hasNext = Book::query()->where(['status' => StatusEnum::ON])->offset($offset + $perPage)->limit($perPage)->exists();
-        $total = Book::query()->where(['status' => StatusEnum::ON])->count();
+
+        $books = Book::query()->where(['status' => StatusEnum::ON])->get();
+        $bookIdList = $books->modelKeys();
+        $bookSeries = BookSeries::query()
+            ->whereIn('book_id', $bookIdList)
+            ->where(['status' => StatusEnum::ON])
+            ->get();
+        $bookSeriesIdList = $bookSeries->modelKeys();
+        $bookSeries = $bookSeries->groupBy('book_id');
+
+        $takenBooks = OccupiedBook::query()->whereIn('book_series_id', $bookSeriesIdList)
+            ->where(['status' => StatusEnum::ON])
+            ->whereNull('returned_date')
+            ->get()->groupBy('book_series_id');
+        $takenBooks->makeHidden(['book_series_id', 'returned_date']);
+        foreach ($books as $book) {
+            if ($bookSeries->has($book->id)) {
+                $book->book_series = $bookSeries[$book->id];
+                foreach ($book->book_series as $book_serie) {
+                    if ($takenBooks->has($book_serie->id)) {
+                        $book_serie->taken = $takenBooks[$book_serie->id];
+                    }
+                }
+            }
+        }
+
 
         return $this->success([
             'books' => $books,
-            'pagination' => [
-                'hasNext' => $hasNext,
-                'total' => $total,
-                'currentPage' => $page
-            ]
+
         ]);
     }
 
@@ -70,7 +88,25 @@ class BookController extends Controller
             return $this->error('', 'The requested book was not found', 404);
         }
 
-        $book->load('bookSeries');
+        $bookSeries = BookSeries::query()
+            ->where('book_id', $book->id)
+            ->where(['status' => StatusEnum::ON])
+            ->get();
+        $bookSeriesIdList = $bookSeries->modelKeys();
+
+        $takenBooks = OccupiedBook::query()->whereIn('book_series_id', $bookSeriesIdList)
+            ->where(['status' => StatusEnum::ON])
+            ->whereNull('returned_date')
+            ->get()->groupBy('book_series_id');
+        $takenBooks->makeHidden(['book_series_id', 'returned_date']);
+
+        if ($bookSeries) {
+            $book->book_series = $bookSeries;
+            foreach ($book->book_series as $book_serie)
+                if ($takenBooks->has($book_serie->id)) {
+                    $book_serie->taken = $takenBooks[$book_serie->id];
+                }
+        }
 
         return $this->success([
             'book' => $book

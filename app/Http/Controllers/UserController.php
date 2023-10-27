@@ -76,7 +76,7 @@ class UserController extends Controller
             return response()->json(['message' => 'Unauthenticated.'], 401);
         }
 
-        $perPage = 50;
+        $perPage = config('global.pagination.perPage');
         $offset = ($page - 1) * $perPage;
 
         $users = User::query()->where(['status' => StatusEnum::ON])->offset($offset)->limit($perPage)->get();

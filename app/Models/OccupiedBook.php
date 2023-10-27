@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Enum\StatusEnum;
+use App\Enum\OccupiedEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -23,6 +23,10 @@ class OccupiedBook extends Model
     protected $casts = [
         'occupied_date' => 'datetime:H:i d.m.Y',
         'returned_date' => 'datetime:H:i d.m.Y',
-        'status' => StatusEnum::class,
+        'status' => OccupiedEnum::class,
+    ];
+
+    protected $hidden = [
+        'status',
     ];
 }
